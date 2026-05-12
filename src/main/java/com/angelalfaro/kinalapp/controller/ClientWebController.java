@@ -24,6 +24,7 @@ public class ClientWebController {
         List<Client> clients = clientService.listAll();
         model.addAttribute("clients", clients);
         model.addAttribute("newClient", new Client());
+        model.addAttribute("role", "USER");
         return "cruds/clients";
     }
 
