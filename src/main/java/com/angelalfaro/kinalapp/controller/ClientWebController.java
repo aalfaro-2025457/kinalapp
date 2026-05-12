@@ -1,8 +1,12 @@
 package com.angelalfaro.kinalapp.controller;
 
+import com.angelalfaro.kinalapp.config.MyUserDetailService;
 import com.angelalfaro.kinalapp.entity.Client;
 import com.angelalfaro.kinalapp.service.client.ClientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +21,7 @@ import java.util.Optional;
 public class ClientWebController {
 
     private final ClientService clientService;
+    private final MyUserDetailService myUserDetailService;
 
     @GetMapping
     public String getClients(Model model){
@@ -24,7 +29,6 @@ public class ClientWebController {
         List<Client> clients = clientService.listAll();
         model.addAttribute("clients", clients);
         model.addAttribute("newClient", new Client());
-        model.addAttribute("role", "USER");
         return "cruds/clients";
     }
 
