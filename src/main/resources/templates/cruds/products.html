@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -88,7 +88,7 @@
                     <h3 class="title" th:text="'Stock: ' + ${product.stockProduct}"></h3>
                     <h3 class="title" th:text="'Estado: ' + ${product.stateProduct}"></h3>
 
-                    <div class="actions">
+                    <div sec:authorize="hasRole('ADMIN')" class="actions">
                         <a th:href="@{/view/products/edit/{code}(code=${product.codeProduct})}"
                             class="btn bg-green2">Editar</a>
                         <a th:href="@{/view/products/delete/{code}(code=${product.codeProduct})}"
