@@ -1,6 +1,7 @@
 package com.angelalfaro.kinalapp.service.user;
 
 import com.angelalfaro.kinalapp.entity.User;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,11 +31,13 @@ public interface IUserService {
     /*
     * Method to update an eistant User in the DB
     * */
+    @PreAuthorize("hasRole('ADMIN')")
     User updateUser(Long codeUser, User user);
 
     /*
     * Method to delete an existant User by the codeUser
     * */
+    @PreAuthorize("hasRole('ADMIN')")
     void deleteUser(Long codeUser);
 
     /*
