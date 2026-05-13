@@ -5,6 +5,8 @@ import com.angelalfaro.kinalapp.entity.Client;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
 public interface IClientService {
 
     /*
@@ -29,6 +31,7 @@ public interface IClientService {
     Optional<Client> findByDPI(String dpi);
 
     //Method to update a Client
+    @PreAuthorize("hasRole('ADMIN')")
     Client update(String dpi, Client c);
     /*
     * Parammeters:
@@ -43,6 +46,7 @@ public interface IClientService {
     *   void: don't return any value
     * Delete a Client by the DPI
     * */
+    @PreAuthorize("hasRole('ADMIN')")
     void delete(String dpi);
 
     /*
