@@ -1,6 +1,7 @@
 package com.angelalfaro.kinalapp.service.product;
 
 import com.angelalfaro.kinalapp.entity.Product;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,11 +32,13 @@ public interface IProductService{
     /*
     * Method that update a Product
     * */
+    @PreAuthorize("hasRole('ADMIN')")
     Product updateProduct(Long codeProduct, Product product);
 
     /*
     * Method that delete an existant Product in the DB
     * */
+    @PreAuthorize("hasRole('ADMIN')")
     void deleteProduct(Long codeProduct);
 
     /*

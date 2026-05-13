@@ -4,6 +4,7 @@ import com.angelalfaro.kinalapp.entity.Product;
 import com.angelalfaro.kinalapp.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +49,7 @@ public class ProductServiceImpl implements IProductService{
 
     @Override
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public Product updateProduct(Long codeProduct, Product product) {
 
         if (!productRepository.existsById(codeProduct)) {
@@ -80,6 +82,7 @@ public class ProductServiceImpl implements IProductService{
 
     @Override
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteProduct(Long codeProduct) {
         
         if (!productRepository.existsById(codeProduct)) {
