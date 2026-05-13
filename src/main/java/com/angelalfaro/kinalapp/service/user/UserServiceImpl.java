@@ -4,6 +4,7 @@ import com.angelalfaro.kinalapp.entity.User;
 import com.angelalfaro.kinalapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +51,7 @@ public class UserServiceImpl implements IUserService{
 
     @Override
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public User updateUser(Long codeUser, User user) {
 
         if(!userRepository.existsById(codeUser)){
@@ -93,6 +95,7 @@ public class UserServiceImpl implements IUserService{
 
     @Override
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(Long codeUser) {
 
         if (!userRepository.existsById(codeUser)){
