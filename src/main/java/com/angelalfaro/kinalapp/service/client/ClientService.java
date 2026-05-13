@@ -2,6 +2,8 @@ package com.angelalfaro.kinalapp.service.client;
 
 import com.angelalfaro.kinalapp.entity.Client;
 import com.angelalfaro.kinalapp.repository.ClientRepository;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,6 +91,7 @@ public class ClientService implements IClientService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public Client update(String dpi, Client c) {
 
         //Method to update a existent client
@@ -110,6 +113,7 @@ public class ClientService implements IClientService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(String dpi) {
         //delete a client
         if (!clientRepository.existsById(dpi)){
