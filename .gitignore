@@ -34,3 +34,5 @@ build/
 
 ### Ignore application.properties modifies ###
 src/main/resources/application.properties
+application.properties
+*.properties
