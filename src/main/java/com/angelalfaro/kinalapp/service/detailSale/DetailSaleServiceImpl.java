@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,6 +52,7 @@ public class DetailSaleServiceImpl implements IDetailSaleService{
 
     @Override
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public DetailSale updateDetailSale(Long codeDetailSale, DetailSale detailSale) {
         if (!detailSaleRepository.existsById(codeDetailSale)) {
             throw new RuntimeException("El Detalle de Venta no fue encontrado");
@@ -86,6 +88,7 @@ public class DetailSaleServiceImpl implements IDetailSaleService{
 
     @Override
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteDetailSale(Long codeDetailSale) {
         if (!detailSaleRepository.existsById(codeDetailSale)) {
             throw new RuntimeException("El Detalle de Venta no fue encontrado");
