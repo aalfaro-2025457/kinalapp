@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +48,7 @@ public class SaleServiceImpl implements ISaleService{
 
     @Override
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public Sale updateSale(Long codeSale, Sale sale) {
         if (!saleRepository.existsById(codeSale)) {
             throw new RuntimeException("La venta no fue encontrada");
@@ -72,6 +74,7 @@ public class SaleServiceImpl implements ISaleService{
 
     @Override
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteSale(Long codeSale) {
         if (!saleRepository.existsById(codeSale)) {
             throw new RuntimeException("La venta no fue encontrada");

@@ -2,6 +2,7 @@ package com.angelalfaro.kinalapp.service.sale;
 
 
 import com.angelalfaro.kinalapp.entity.Sale;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,11 +32,13 @@ public interface ISaleService {
     /*
     * Method to update an existant Sale
     * */
+    @PreAuthorize("hasRole('ADMIN')")
     Sale updateSale(Long codeSale, Sale sale);
 
     /*
     * This method will be used to delete an existant Sale by the codeSale
     * */
+    @PreAuthorize("hasRole('ADMIN')")
     void deleteSale(Long codeSale);
 
     /*
