@@ -10,8 +10,8 @@ Utilizando una Api REST
 * **MySQL** (Sistema Gestor de Base de Datos)
 * **Maven** (Gestor de Dependencias)
 * **Lombok**
-* **SpringSecurity** (Sin uso real, solo permitimos el uso de todas las rutas y CORS)
-* **Thymeleaf** (No hay uso todavia)
+* **SpringSecurity** 
+* **Thymeleaf** 
 
 ## Requisitos Previos
 
