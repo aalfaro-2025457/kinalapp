@@ -3,6 +3,8 @@ package com.angelalfaro.kinalapp.controller;
 import com.angelalfaro.kinalapp.entity.Product;
 import com.angelalfaro.kinalapp.service.product.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -43,21 +45,44 @@ public class ProductWebController {
     }
 
     @GetMapping("/delete/{code}")
-    public String deleteProduct(@PathVariable Long code) {
-        productService.deleteProduct(code);
-        return "redirect:/view/products";
+    public String deleteProduct(@PathVariable Long code, Model model) {
+        try {
+            productService.deleteProduct(code);
+            return "redirect:/view/products";
+        } catch (Exception e) {
+            model.addAttribute("products", productService.listAllProducts());
+            model.addAttribute("newProduct", new Product());
+            model.addAttribute("errorMsg", "Error al buscar producto.");
+            return "cruds/products";
+        }
     }
 
     @GetMapping("/search")
     public String searchByCode(@RequestParam(name = "codeSearch", required = false) Long codeSearch, Model model) {
-        List<Product> results = new ArrayList<>();
-        if (codeSearch != null) {
-            productService.findByCodeProduct(codeSearch).ifPresent(results::add);
-        } else {
-            results = productService.listAllProducts();
+        try {
+            List<Product> results = new ArrayList<>();
+            if (codeSearch != null) {
+                productService.findByCodeProduct(codeSearch).ifPresent(results::add);
+            } else {
+                results = productService.listAllProducts();
+            }
+            model.addAttribute("products", results);
+            model.addAttribute("newProduct", new Product());
+            return "cruds/products";
+        } catch (Exception e) {
+            model.addAttribute("products", productService.listAllProducts());
+            model.addAttribute("newProduct", new Product());
+            model.addAttribute("errorMsg", "Error al buscar producto.");
+            return "cruds/products";
         }
-        model.addAttribute("products", results);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public String handleAccessDenied(AccessDeniedException ex, Model model) {
+        model.addAttribute("products", productService.listAllProducts());
         model.addAttribute("newProduct", new Product());
+        model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
+        
         return "cruds/products";
     }
 }
