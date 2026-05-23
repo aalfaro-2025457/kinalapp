@@ -42,6 +42,9 @@
         <main class="clients-view">
             <h1 class="title">Clientes</h1>
             <h3 class="title">En esta vista usted puede crear nuevos clientes</h3>
+            <div th:if="${errorMsg}" th:text="${errorMsg}" class="error">
+                
+            </div>
             <form class="card" th:action="@{/view/clients/save}" th:object="${newClient}" method="post">
                 <div class="card form">
                     <div class="container">
@@ -91,7 +94,7 @@
                     <h3 class="title" th:text="'Direccion: ' + ${client.direction}"></h3>
                     <h3 class="title" th:text="'Estado: ' + ${client.state}"></h3>
 
-                    <div sec:authorize="hasRole('ADMIN')" class="actions">
+                    <div  class="actions">
                         <a th:href="@{/view/clients/edit/{dpi}(dpi=${client.DPIClient})}"
                             class="btn bg-green2">Editar</a>
                         <a th:href="@{/view/clients/delete/{dpi}(dpi=${client.DPIClient})}"
