@@ -38,7 +38,7 @@ public class ClientWebController {
             List<Client> clients = clientService.listAll();
             model.addAttribute("clients", clients);
             model.addAttribute("newClient", new Client());
-            model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
+            model.addAttribute("errorMsg", e.getMessage());
             
             return "cruds/clients";
         }
@@ -61,7 +61,7 @@ public class ClientWebController {
             List<Client> clients = clientService.listAll();
             model.addAttribute("clients", clients);
             model.addAttribute("newClient", new Client());
-            model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
+            model.addAttribute("errorMsg", e.getMessage());
             
             return "cruds/clients";
         }
@@ -76,7 +76,7 @@ public class ClientWebController {
             List<Client> clients = clientService.listAll();
             model.addAttribute("clients", clients);
             model.addAttribute("newClient", new Client());
-            model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
+            model.addAttribute("errorMsg", e.getMessage());
             
             return "cruds/clients";
         }
@@ -100,7 +100,7 @@ public class ClientWebController {
             List<Client> clients = clientService.listAll();
             model.addAttribute("clients", clients);
             model.addAttribute("newClient", new Client());
-            model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
+            model.addAttribute("errorMsg", e.getMessage());
             
             return "cruds/clients";
         }
