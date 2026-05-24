@@ -28,20 +28,34 @@ public class ProductWebController {
     }
 
     @PostMapping("/save")
-    public String saveProduct(@ModelAttribute("newProduct") Product product) {
-        productService.saveProduct(product);
-        return "redirect:/view/products";
+    public String saveProduct(@ModelAttribute("newProduct") Product product, Model model) {
+        try {
+            productService.saveProduct(product);
+            return "redirect:/view/products";
+        } catch (Exception e) {
+            model.addAttribute("products", productService.listAllProducts());
+            model.addAttribute("newProduct", new Product());
+            model.addAttribute("errorMsg", e.getMessage());
+            return "cruds/products";
+        }
     }
 
     @GetMapping("/edit/{code}")
     public String editProduct(@PathVariable Long code, Model model) {
-        Optional<Product> productToEdit = productService.findByCodeProduct(code);
-        if (productToEdit.isPresent()) {
+        try {
+            Optional<Product> productToEdit = productService.findByCodeProduct(code);
+            if (productToEdit.isPresent()) {
+                model.addAttribute("products", productService.listAllProducts());
+                model.addAttribute("newProduct", productToEdit.get());
+                return "cruds/products";
+            }
+            return "redirect:/view/products";
+        } catch (Exception e) {
             model.addAttribute("products", productService.listAllProducts());
-            model.addAttribute("newProduct", productToEdit.get());
+            model.addAttribute("newProduct", new Product());
+            model.addAttribute("errorMsg", e.getMessage());
             return "cruds/products";
         }
-        return "redirect:/view/products";
     }
 
     @GetMapping("/delete/{code}")
@@ -52,7 +66,7 @@ public class ProductWebController {
         } catch (Exception e) {
             model.addAttribute("products", productService.listAllProducts());
             model.addAttribute("newProduct", new Product());
-            model.addAttribute("errorMsg", "Error al buscar producto.");
+            model.addAttribute("errorMsg", e.getMessage());
             return "cruds/products";
         }
     }
@@ -72,7 +86,7 @@ public class ProductWebController {
         } catch (Exception e) {
             model.addAttribute("products", productService.listAllProducts());
             model.addAttribute("newProduct", new Product());
-            model.addAttribute("errorMsg", "Error al buscar producto.");
+            model.addAttribute("errorMsg", e.getMessage());
             return "cruds/products";
         }
     }
