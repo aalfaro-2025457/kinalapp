@@ -45,7 +45,9 @@
             <h3 class="title">En esta vista usted puede crear nuevos usuarios</h3>
 
             <div th:if="${errorMsg}" th:text="${errorMsg}" class="error"></div>
+            <div th:if="${successMsg}" th:text="${successMsg}" class="logout-msg">
 
+            </div>
             <form class="card" th:action="@{/view/user/save}" th:object="${newUser}" method="post">
                 <input type="hidden" th:field="*{codeUser}">
 
