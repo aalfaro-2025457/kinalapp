@@ -3,8 +3,10 @@ package com.angelalfaro.kinalapp.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,39 +40,90 @@ public class DetailSaleWebController {
     }
 
     @PostMapping("/save")
-    public String saveDetail(@ModelAttribute("newDetail") DetailSale detailSale) {
-        detailSaleService.saveDetailSale(detailSale);
-        return "redirect:/view/detail-sales";
+    public String saveDetail(@ModelAttribute("newDetail") DetailSale detailSale, Model model) {
+        try {
+            detailSaleService.saveDetailSale(detailSale);
+            return "redirect:/view/detail-sales";
+        } catch (Exception e){
+            model.addAttribute("details", detailSaleService.listAllDetailSale());
+            model.addAttribute("newDetail", new DetailSale());
+            model.addAttribute("products", productService.listAllProducts());
+            model.addAttribute("sales", saleService.listAllSales());
+            model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
+            
+            return "cruds/detail-sale";
+        }
     }
 
     @GetMapping("/search")
     public String searchDetail(@RequestParam("codeSearch") Long codeSearch, Model model) {
-        Optional<DetailSale> result = detailSaleService.findByCodeDetailSale(codeSearch);
-        model.addAttribute("details", result.isPresent() ? List.of(result.get()) : List.of());
-        model.addAttribute("newDetail", new DetailSale());
-        model.addAttribute("products", productService.listAllProducts());
-        model.addAttribute("sales", saleService.listAllSales());
-        return "cruds/detail-sale";
+        try {
+            Optional<DetailSale> result = detailSaleService.findByCodeDetailSale(codeSearch);
+            model.addAttribute("details", result.isPresent() ? List.of(result.get()) : List.of());
+            model.addAttribute("newDetail", new DetailSale());
+            model.addAttribute("products", productService.listAllProducts());
+            model.addAttribute("sales", saleService.listAllSales());
+            return "cruds/detail-sale";
+        } catch (Exception e){
+            model.addAttribute("details", detailSaleService.listAllDetailSale());
+            model.addAttribute("newDetail", new DetailSale());
+            model.addAttribute("products", productService.listAllProducts());
+            model.addAttribute("sales", saleService.listAllSales());
+            model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
+            
+            return "cruds/detail-sale";
+        }
     }
 
     @GetMapping("/edit/{code}")
     public String editDetail(@PathVariable Long code, Model model) {
-        Optional<DetailSale> detailToEdit = detailSaleService.findByCodeDetailSale(code);
+        try {
+            Optional<DetailSale> detailToEdit = detailSaleService.findByCodeDetailSale(code);
         
-        if (detailToEdit.isPresent()) {
-            model.addAttribute("newDetail", detailToEdit.get());
+            if (detailToEdit.isPresent()) {
+                model.addAttribute("newDetail", detailToEdit.get());
+                model.addAttribute("details", detailSaleService.listAllDetailSale());
+                model.addAttribute("products", productService.listAllProducts());
+                model.addAttribute("sales", saleService.listAllSales());
+                return "cruds/detail-sale";
+            }
+            return "redirect:/view/detail-sales";
+        } catch (Exception e){
             model.addAttribute("details", detailSaleService.listAllDetailSale());
+            model.addAttribute("newDetail", new DetailSale());
             model.addAttribute("products", productService.listAllProducts());
             model.addAttribute("sales", saleService.listAllSales());
+            model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
+            
             return "cruds/detail-sale";
         }
-        return "redirect:/view/detail-sales";
     }
 
     @GetMapping("/delete/{code}")
-    public String deleteDetail(@PathVariable Long code) {
-        detailSaleService.deleteDetailSale(code);
-        return "redirect:/view/detail-sales";
+    public String deleteDetail(@PathVariable Long code, Model model) {
+        try {
+            detailSaleService.deleteDetailSale(code);
+            return "redirect:/view/detail-sales";
+        } catch (Exception e){
+            model.addAttribute("details", detailSaleService.listAllDetailSale());
+            model.addAttribute("newDetail", new DetailSale());
+            model.addAttribute("products", productService.listAllProducts());
+            model.addAttribute("sales", saleService.listAllSales());
+            model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
+            
+            return "cruds/detail-sale";
+        }
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public String handleAccessDenied(AccessDeniedException ex, Model model) {
+        model.addAttribute("details", detailSaleService.listAllDetailSale());
+        model.addAttribute("newDetail", new DetailSale());
+        model.addAttribute("products", productService.listAllProducts());
+        model.addAttribute("sales", saleService.listAllSales());
+        model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
+        
+        return "cruds/detail-sale";
     }
     
 }

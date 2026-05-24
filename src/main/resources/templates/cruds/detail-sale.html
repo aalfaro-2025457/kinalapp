@@ -40,7 +40,9 @@
         <main class="clients-view">
             <h1 class="title">Detalles de Venta</h1>
             <h3 class="title">Gestión de productos por transacción</h3>
-
+            <div th:if="${errorMsg}" th:text="${errorMsg}" class="error">
+                
+            </div>
             <form class="card" th:action="@{/view/detail-sales/save}" th:object="${newDetail}" method="post">
                 <div class="card form">
                     <div class="container">
