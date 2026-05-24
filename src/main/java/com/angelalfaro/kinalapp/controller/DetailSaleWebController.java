@@ -32,26 +32,20 @@ public class DetailSaleWebController {
 
     @GetMapping
     public String getDetailSales(Model model) {
-        model.addAttribute("details", detailSaleService.listAllDetailSale());
-        model.addAttribute("newDetail", new DetailSale());
-        model.addAttribute("products", productService.listAllProducts());
-        model.addAttribute("sales", saleService.listAllSales());
-        return "cruds/detail-sale";
+        return reloadPage(model);
     }
 
     @PostMapping("/save")
     public String saveDetail(@ModelAttribute("newDetail") DetailSale detailSale, Model model) {
         try {
             detailSaleService.saveDetailSale(detailSale);
-            return "redirect:/view/detail-sales";
+            model.addAttribute("successMsg", "El Detalle de venta ha sido registrado exitosamente");
+
+            return reloadPage(model);
         } catch (Exception e){
-            model.addAttribute("details", detailSaleService.listAllDetailSale());
-            model.addAttribute("newDetail", new DetailSale());
-            model.addAttribute("products", productService.listAllProducts());
-            model.addAttribute("sales", saleService.listAllSales());
-            model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
+            model.addAttribute("errorMsg", e.getMessage());
             
-            return "cruds/detail-sale";
+            return reloadPage(model);
         }
     }
 
@@ -65,13 +59,9 @@ public class DetailSaleWebController {
             model.addAttribute("sales", saleService.listAllSales());
             return "cruds/detail-sale";
         } catch (Exception e){
-            model.addAttribute("details", detailSaleService.listAllDetailSale());
-            model.addAttribute("newDetail", new DetailSale());
-            model.addAttribute("products", productService.listAllProducts());
-            model.addAttribute("sales", saleService.listAllSales());
-            model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
+            model.addAttribute("errorMsg", e.getMessage());
             
-            return "cruds/detail-sale";
+            return reloadPage(model);
         }
     }
 
@@ -89,13 +79,9 @@ public class DetailSaleWebController {
             }
             return "redirect:/view/detail-sales";
         } catch (Exception e){
-            model.addAttribute("details", detailSaleService.listAllDetailSale());
-            model.addAttribute("newDetail", new DetailSale());
-            model.addAttribute("products", productService.listAllProducts());
-            model.addAttribute("sales", saleService.listAllSales());
-            model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
+            model.addAttribute("errorMsg", e.getMessage());
             
-            return "cruds/detail-sale";
+            return reloadPage(model);
         }
     }
 
@@ -103,26 +89,28 @@ public class DetailSaleWebController {
     public String deleteDetail(@PathVariable Long code, Model model) {
         try {
             detailSaleService.deleteDetailSale(code);
-            return "redirect:/view/detail-sales";
+            model.addAttribute("successMsg", "El Detalle de venta ha sido eliminado exitosamente");
+
+            return reloadPage(model);
         } catch (Exception e){
-            model.addAttribute("details", detailSaleService.listAllDetailSale());
-            model.addAttribute("newDetail", new DetailSale());
-            model.addAttribute("products", productService.listAllProducts());
-            model.addAttribute("sales", saleService.listAllSales());
-            model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
+            model.addAttribute("errorMsg", e.getMessage());
             
-            return "cruds/detail-sale";
+            return reloadPage(model);
         }
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public String handleAccessDenied(AccessDeniedException ex, Model model) {
+        model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
+        
+        return reloadPage(model);
+    }
+
+    public String reloadPage(Model model){
         model.addAttribute("details", detailSaleService.listAllDetailSale());
         model.addAttribute("newDetail", new DetailSale());
         model.addAttribute("products", productService.listAllProducts());
         model.addAttribute("sales", saleService.listAllSales());
-        model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
-        
         return "cruds/detail-sale";
     }
     
