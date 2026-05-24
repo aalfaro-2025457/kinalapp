@@ -22,25 +22,19 @@ public class ClientWebController {
 
     @GetMapping
     public String getClients(Model model){
-
-        List<Client> clients = clientService.listAll();
-        model.addAttribute("clients", clients);
-        model.addAttribute("newClient", new Client());
-        return "cruds/clients";
+        return reloadPage(model);
     }
 
     @PostMapping("/save")
     public String saveClient(@ModelAttribute("newClient") Client client, Model model) {
         try {
             clientService.save(client);
-            return "redirect:/view/clients";
+            model.addAttribute("successMsg", "El Cliente ha sido registrado exitosamente");
+            return reloadPage(model);
         } catch (Exception e){
-            List<Client> clients = clientService.listAll();
-            model.addAttribute("clients", clients);
-            model.addAttribute("newClient", new Client());
             model.addAttribute("errorMsg", e.getMessage());
             
-            return "cruds/clients";
+            return reloadPage(model);
         }
     }
 
@@ -58,12 +52,9 @@ public class ClientWebController {
             }
             return "redirect:/view/clients";
         } catch (Exception e){
-            List<Client> clients = clientService.listAll();
-            model.addAttribute("clients", clients);
-            model.addAttribute("newClient", new Client());
             model.addAttribute("errorMsg", e.getMessage());
             
-            return "cruds/clients";
+            return reloadPage(model);
         }
     }
 
@@ -71,14 +62,12 @@ public class ClientWebController {
     public String deleteClient(@PathVariable String dpi, Model model) {
         try {
             clientService.delete(dpi);
-            return "redirect:/view/clients";
+            model.addAttribute("successMsg", "El Cliente ha sido eliminado exitosamente");
+            return reloadPage(model);
         } catch (Exception e){
-            List<Client> clients = clientService.listAll();
-            model.addAttribute("clients", clients);
-            model.addAttribute("newClient", new Client());
             model.addAttribute("errorMsg", e.getMessage());
             
-            return "cruds/clients";
+            return reloadPage(model);
         }
     }
 
@@ -97,21 +86,23 @@ public class ClientWebController {
             model.addAttribute("newClient", new Client());
             return "cruds/clients";
         } catch (Exception e){
-            List<Client> clients = clientService.listAll();
-            model.addAttribute("clients", clients);
-            model.addAttribute("newClient", new Client());
             model.addAttribute("errorMsg", e.getMessage());
             
-            return "cruds/clients";
+            return reloadPage(model);
         }
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public String handleAccessDenied(AccessDeniedException ex, Model model) {
+        model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
+        
+        return reloadPage(model);
+    }
+
+    public String reloadPage(Model model){
         List<Client> clients = clientService.listAll();
         model.addAttribute("clients", clients);
         model.addAttribute("newClient", new Client());
-        model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
         
         return "cruds/clients";
     }
