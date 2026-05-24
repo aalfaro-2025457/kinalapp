@@ -40,7 +40,9 @@
         <main class="clients-view">
             <h1 class="title">Ventas</h1>
             <h3 class="title">Registro y control de transacciones</h3>
-
+            <div th:if="${errorMsg}" th:text="${errorMsg}" class="error">
+                
+            </div>
             <form class="card" th:action="@{/view/sales/save}" th:object="${newSale}" method="post">
                 <div class="card form">
                     <div class="container">
