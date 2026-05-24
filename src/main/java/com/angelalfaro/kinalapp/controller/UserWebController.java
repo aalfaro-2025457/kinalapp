@@ -22,22 +22,19 @@ public class UserWebController {
 
     @GetMapping
     public String getUsers(Model model) {
-        List<User> users = userService.listAllUsers();
-        model.addAttribute("users", users);
-        model.addAttribute("newUser", new User());
-        return "cruds/user";
+        return reloadPage(model);
     }
 
     @PostMapping("/save")
     public String saveUser(@ModelAttribute("newUser") User user, Model model) {
         try {
             userService.saveUser(user);
-            return "redirect:/view/user";
+            model.addAttribute("successMsg", "El Usuario ha sido registrado exitosamente");
+
+            return reloadPage(model);
         } catch (Exception e) {
-            model.addAttribute("users", userService.listAllUsers());
-            model.addAttribute("newUser", new User());
             model.addAttribute("errorMsg", e.getMessage());
-            return "cruds/user";
+            return reloadPage(model);
         }
     }
 
@@ -53,10 +50,8 @@ public class UserWebController {
             }
             return "redirect:/view/user";
         } catch (Exception e) {
-            model.addAttribute("users", userService.listAllUsers());
-            model.addAttribute("newUser", new User());
             model.addAttribute("errorMsg", e.getMessage());
-            return "cruds/user";
+            return reloadPage(model);
         }
     }
 
@@ -64,12 +59,12 @@ public class UserWebController {
     public String deleteUser(@PathVariable Long code, Model model) {
         try {
             userService.deleteUser(code);
-            return "redirect:/view/user";
+            model.addAttribute("successMsg", "El Usuario ha sido eliminado exitosamente");
+
+            return reloadPage(model);
         } catch (Exception e) {
-            model.addAttribute("users", userService.listAllUsers());
-            model.addAttribute("newUser", new User());
             model.addAttribute("errorMsg", e.getMessage());
-            return "cruds/user";
+            return reloadPage(model);
         }
     }
 
@@ -88,18 +83,21 @@ public class UserWebController {
             model.addAttribute("newUser", new User());
             return "cruds/user";
         } catch (Exception e) {
-            model.addAttribute("users", userService.listAllUsers());
-            model.addAttribute("newUser", new User());
-            model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
-            return "cruds/user";
+            model.addAttribute("errorMsg", e.getMessage());
+            return reloadPage(model);
         }
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public String handleAccessDenied(AccessDeniedException ex, Model model) {
-        model.addAttribute("users", userService.listAllUsers());
-        model.addAttribute("newUser", new User());
         model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
+        return reloadPage(model);
+    }
+
+    public String reloadPage(Model model){
+        List<User> users = userService.listAllUsers();
+        model.addAttribute("users", users);
+        model.addAttribute("newUser", new User());
         return "cruds/user";
     }
 }
