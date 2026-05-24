@@ -71,7 +71,7 @@
                     </div>
                     <div class="container">
                         <label class="label" for="">Estado</label>
-                        <input class="textfield" type="number" th:field="*{state}" placeholder="1" name="name"
+                        <input class="textfield" type="number" min="0" max="1" step="1" th:field="*{state}" placeholder="1" name="name"
                             id="name" required>
                     </div>
                 </div>

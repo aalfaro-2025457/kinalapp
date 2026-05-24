@@ -1,15 +1,18 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
     <title>Login</title>
     <link rel="stylesheet" th:href="@{/styles/style.css}">
     <link rel="icon" th:href="@{/images/icons/kinal-icon.png}" type="image/x-icon">
 </head>
+
 <body>
     <main class="login">
         <h1 class="title">KinalApp by Angel Alfaro</h1>
@@ -24,7 +27,8 @@
             <label class="label" for="">Username</label>
             <input class="textfield" type="text" placeholder="aalfaro-2025457" name="username" id="username" required>
             <label class="label" for="">Password</label>
-            <input class="textfield" type="password" placeholder="admin123" name="password" id="password" required>
+            <input class="textfield" type="password" placeholder="admin123" name="password" id="password"
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!_]).{8,}" required>
             <button type="submit" class="btn">Log in</button>
         </form>
         <h3 class="title">¿No tienes usuario?, <a class="anchor" th:href="@{register}">Registrate aqui!!</a></h3>
@@ -33,4 +37,5 @@
         <h3 class="title">@Copyright Angel Alfaro</h3>
     </footer>
 </body>
+
 </html>
