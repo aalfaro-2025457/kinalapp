@@ -22,21 +22,19 @@ public class ProductWebController {
 
     @GetMapping
     public String getProducts(Model model) {
-        model.addAttribute("products", productService.listAllProducts());
-        model.addAttribute("newProduct", new Product());
-        return "cruds/products";
+        return reloadPage(model);
     }
 
     @PostMapping("/save")
     public String saveProduct(@ModelAttribute("newProduct") Product product, Model model) {
         try {
             productService.saveProduct(product);
-            return "redirect:/view/products";
+            model.addAttribute("successMsg", "El Producto ha sido registrado exitosamente");
+
+            return reloadPage(model);
         } catch (Exception e) {
-            model.addAttribute("products", productService.listAllProducts());
-            model.addAttribute("newProduct", new Product());
             model.addAttribute("errorMsg", e.getMessage());
-            return "cruds/products";
+            return reloadPage(model);
         }
     }
 
@@ -51,10 +49,8 @@ public class ProductWebController {
             }
             return "redirect:/view/products";
         } catch (Exception e) {
-            model.addAttribute("products", productService.listAllProducts());
-            model.addAttribute("newProduct", new Product());
             model.addAttribute("errorMsg", e.getMessage());
-            return "cruds/products";
+            return reloadPage(model);
         }
     }
 
@@ -62,12 +58,12 @@ public class ProductWebController {
     public String deleteProduct(@PathVariable Long code, Model model) {
         try {
             productService.deleteProduct(code);
-            return "redirect:/view/products";
+            model.addAttribute("successMsg", "El Producto ha sido eliminado exitosamente");
+
+            return reloadPage(model);
         } catch (Exception e) {
-            model.addAttribute("products", productService.listAllProducts());
-            model.addAttribute("newProduct", new Product());
             model.addAttribute("errorMsg", e.getMessage());
-            return "cruds/products";
+            return reloadPage(model);
         }
     }
 
@@ -84,19 +80,21 @@ public class ProductWebController {
             model.addAttribute("newProduct", new Product());
             return "cruds/products";
         } catch (Exception e) {
-            model.addAttribute("products", productService.listAllProducts());
-            model.addAttribute("newProduct", new Product());
             model.addAttribute("errorMsg", e.getMessage());
-            return "cruds/products";
+            return reloadPage(model);
         }
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public String handleAccessDenied(AccessDeniedException ex, Model model) {
-        model.addAttribute("products", productService.listAllProducts());
-        model.addAttribute("newProduct", new Product());
         model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
         
+        return reloadPage(model);
+    }
+
+    public String reloadPage(Model model){
+        model.addAttribute("products", productService.listAllProducts());
+        model.addAttribute("newProduct", new Product());
         return "cruds/products";
     }
 }
