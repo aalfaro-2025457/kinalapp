@@ -43,7 +43,7 @@
         <main class="clients-view">
             <h1 class="title">Usuarios</h1>
             <h3 class="title">En esta vista usted puede crear nuevos usuarios</h3>
-            
+
             <div th:if="${errorMsg}" th:text="${errorMsg}" class="error"></div>
 
             <form class="card" th:action="@{/view/user/save}" th:object="${newUser}" method="post">
@@ -52,15 +52,18 @@
                 <div class="card form">
                     <div class="container">
                         <label class="label">Nombre de Usuario</label>
-                        <input class="textfield" type="text" th:field="*{usernameUser}" placeholder="username123" required>
+                        <input class="textfield" type="text" th:field="*{usernameUser}" placeholder="username123"
+                            required>
                     </div>
                     <div class="container">
                         <label class="label">Correo Electrónico</label>
-                        <input class="textfield" type="email" th:field="*{emailUser}" placeholder="correo@kinal.edu.gt" required>
+                        <input class="textfield" type="email" th:field="*{emailUser}" placeholder="correo@kinal.edu.gt"
+                            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" required>
                     </div>
                     <div class="container">
                         <label class="label">Contraseña</label>
-                        <input class="textfield" type="password" th:field="*{passwordUser}" placeholder="********" required>
+                        <input class="textfield" type="password" th:field="*{passwordUser}" placeholder="********"
+                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!_]).{8,}" required>
                     </div>
                     <div class="container">
                         <label class="label">Rol</label>
@@ -68,17 +71,20 @@
                     </div>
                     <div class="container">
                         <label class="label">Estado</label>
-                        <input class="textfield" type="number" th:field="*{stateUser}" placeholder="1" required>
+                        <input class="textfield" type="number" min="0" max="1" step="1" th:field="*{stateUser}" placeholder="1" required>
                     </div>
                 </div>
-                <button type="submit" class="btn" th:text="${newUser.codeUser != null} ? 'Actualizar' : 'Añadir'"></button>
+                <button type="submit" class="btn"
+                    th:text="${newUser.codeUser != null} ? 'Actualizar' : 'Añadir'"></button>
             </form>
 
             <form th:action="@{/view/users/search}" method="get" class="card">
-                <input type="number" name="codeSearch" class="textfield" placeholder="Buscar por código de usuario (Ej: 1)" style="flex: 1;">
+                <input type="number" min="1" step="1" name="codeSearch" class="textfield"
+                    placeholder="Buscar por código de usuario (Ej: 1)" style="flex: 1;">
                 <div class="actions">
                     <button type="submit" class="btn bg-green2">Buscar</button>
-                    <a th:href="@{/view/users}" class="btn bg-red2" style="text-decoration: none; text-align: center;">Limpiar</a>
+                    <a th:href="@{/view/users}" class="btn bg-red2"
+                        style="text-decoration: none; text-align: center;">Limpiar</a>
                 </div>
             </form>
 

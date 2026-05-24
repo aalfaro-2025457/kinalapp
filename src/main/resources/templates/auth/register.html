@@ -26,10 +26,10 @@
                 name="username" id="username" required>
             <label class="label" for="">E-mail</label>
             <input th:field="*{emailUser}" class="textfield" type="email" placeholder="aalfaro-2025457@kinal.edu.gt"
-                name="email" id="email" required>
+                name="email" id="email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" required>
             <label class="label" for="">Password</label>
             <input th:field="*{passwordUser}" class="textfield" type="password" placeholder="admin123" name="password"
-                id="password" required>
+                id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!_]).{8,}"  required>
             <button class="btn">Register</button>
         </form>
         <h3 class="title">¿Ya tienes una cuenta?, <a class="anchor" th:href="@{login}">Ingresa aqui!!</a></h3>

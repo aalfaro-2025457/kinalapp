@@ -47,7 +47,7 @@
                 <div class="card form">
                     <div class="container">
                         <label class="label">Código de Venta</label>
-                        <input class="textfield" type="number" th:field="*{codeSale}" readonly
+                        <input class="textfield" type="number" min="1" step="1" th:field="*{codeSale}" readonly
                             style="background-color: #e9e9e9; cursor: not-allowed;" required>
                     </div>
 
@@ -70,12 +70,12 @@
 
                     <div class="container">
                         <label class="label">Total</label>
-                        <input class="textfield" type="number" step="1" placeholder="0" th:field="*{totalSale}" required>
+                        <input class="textfield" type="number" min="0" step="1" placeholder="0" th:field="*{totalSale}" required>
                     </div>
 
                     <div class="container">
                         <label class="label">Estado</label>
-                        <input class="textfield" type="number" placeholder="1" th:field="*{stateSale}" required>
+                        <input class="textfield" type="number" min="0" max="1" step="1" placeholder="1" th:field="*{stateSale}" required>
                     </div>
                 </div>
                 <button type="submit" class="btn">Aceptar</button>
@@ -83,7 +83,7 @@
 
             <form th:action="@{/view/sales/search}" method="get" class="card ">
                 <input type="number" name="codeSearch" class="textfield" placeholder="1"
-                    style="flex: 1;" required>
+                    style="flex: 1;" min="1" step="1" required>
                 <div class="actions">
                     <button type="submit" class="btn bg-green2">Buscar</button>
                     <a th:href="@{/view/sales}" class="btn bg-red2" style="text-decoration: none;">Limpiar</a>
