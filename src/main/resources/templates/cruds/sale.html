@@ -43,6 +43,9 @@
             <div th:if="${errorMsg}" th:text="${errorMsg}" class="error">
                 
             </div>
+            <div th:if="${successMsg}" th:text="${successMsg}" class="logout-msg">
+
+            </div>
             <form class="card" th:action="@{/view/sales/save}" th:object="${newSale}" method="post">
                 <div class="card form">
                     <div class="container">

@@ -27,28 +27,20 @@ public class SaleWebController {
 
     @GetMapping
     public String getSales(Model model) {
-        model.addAttribute("sales", saleService.listAllSales());
-        model.addAttribute("newSale", new Sale());
-        
-        model.addAttribute("clients", clientService.listAll());
-        model.addAttribute("users", userService.listAllUsers());
-        return "cruds/sale";
+        return reloadPage(model);
     }
 
     @PostMapping("/save")
     public String saveSale(@ModelAttribute("newSale") Sale sale, Model model) {
         try {
             saleService.saveSale(sale);
-            return "redirect:/view/sales";
+            model.addAttribute("successMsg", "La Venta ha sido registrado exitosamente");
+
+            return reloadPage(model);
         } catch (Exception e){
-            model.addAttribute("sales", saleService.listAllSales());
-            model.addAttribute("newSale", new Sale());
-            
-            model.addAttribute("clients", clientService.listAll());
-            model.addAttribute("users", userService.listAllUsers());
             model.addAttribute("errorMsg", e.getMessage());
             
-            return "cruds/sale";
+            return reloadPage(model);
         }
     }
 
@@ -65,14 +57,9 @@ public class SaleWebController {
             }
             return "redirect:/view/sales";
         } catch (Exception e){
-            model.addAttribute("sales", saleService.listAllSales());
-            model.addAttribute("newSale", new Sale());
-            
-            model.addAttribute("clients", clientService.listAll());
-            model.addAttribute("users", userService.listAllUsers());
             model.addAttribute("errorMsg", e.getMessage());
             
-            return "cruds/sale";
+            return reloadPage(model);
         }
     }
 
@@ -80,16 +67,13 @@ public class SaleWebController {
     public String deleteSale(@PathVariable Long code, Model model) {
         try {
             saleService.deleteSale(code);
-            return "redirect:/view/sales";
+            model.addAttribute("successMsg", "La Venta ha sido eliminado exitosamente");
+
+            return reloadPage(model);
         } catch (Exception e){
-            model.addAttribute("sales", saleService.listAllSales());
-            model.addAttribute("newSale", new Sale());
-            
-            model.addAttribute("clients", clientService.listAll());
-            model.addAttribute("users", userService.listAllUsers());
             model.addAttribute("errorMsg", e.getMessage());
             
-            return "cruds/sale";
+            return reloadPage(model);
         }
     }
 
@@ -106,26 +90,25 @@ public class SaleWebController {
             model.addAttribute("newSale", new Sale());
             return "cruds/sale";
         } catch (Exception e){
-            model.addAttribute("sales", saleService.listAllSales());
-            model.addAttribute("newSale", new Sale());
-            
-            model.addAttribute("clients", clientService.listAll());
-            model.addAttribute("users", userService.listAllUsers());
             model.addAttribute("errorMsg", e.getMessage());
             
-            return "cruds/sale";
+            return reloadPage(model);
         }
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public String handleAccessDenied(AccessDeniedException ex, Model model) {
+        model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
+        
+        return reloadPage(model);
+    }
+
+    public String reloadPage(Model model){
         model.addAttribute("sales", saleService.listAllSales());
         model.addAttribute("newSale", new Sale());
         
         model.addAttribute("clients", clientService.listAll());
         model.addAttribute("users", userService.listAllUsers());
-        model.addAttribute("errorMsg", "No tienes el rol de ADMINISTRADOR para realizar esta acción.");
-        
         return "cruds/sale";
     }
 }
