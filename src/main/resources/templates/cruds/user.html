@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <title>Usuarios</title>
+    <link rel="stylesheet" th:href="@{/styles/style.css}" href="../../static/styles/style.css">
+    <link rel="icon" th:href="@{/images/icons/kinal-icon.png}" type="image/x-icon">
+</head>
+
+<body>
+    <div class="main-wrapper">
+        <nav class="sidebar">
+            <ul class="list">
+                <li class="sidebar-item"><a th:href="@{/home}"><svg xmlns="http://www.w3.org/2000/svg" height="64px"
+                            viewBox="0 -960 960 960" width="64px" fill="#FFFFFF">
+                            <path d="M359-242 120-481l239-239 43 43-166 166h604v60H236l166 166-43 43Z" />
+                        </svg></a></li>
+                <li class="sidebar-item"><a th:href="@{/home}"><svg xmlns="http://www.w3.org/2000/svg" height="64px"
+                            viewBox="0 -960 960 960" width="64px" fill="#FFFFFF">
+                            <path
+                                d="M220-180h150v-250h220v250h150v-390L480-765 220-570v390Zm-60 60v-480l320-240 320 240v480H530v-250H430v250H160Zm320-353Z" />
+                        </svg></a></li>
+                <li class="sidebar-item">
+                    <form class="logout" th:action="@{/logout}" method="post">
+                        <button class="logout" type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="64px" viewBox="0 -960 960 960" width="64px"
+                                fill="#FFFFFF">
+                                <path
+                                    d="M180-120q-24 0-42-18t-18-42v-600q0-24 18-42t42-18h299v60H180v600h299v60H180Zm486-185-43-43 102-102H360v-60h363L621-612l43-43 176 176-174 174Z" />
+                            </svg>
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="clients-view">
+            <h1 class="title">Usuarios</h1>
+            <h3 class="title">En esta vista usted puede crear nuevos usuarios</h3>
+            
+            <div th:if="${errorMsg}" th:text="${errorMsg}" class="error"></div>
+
+            <form class="card" th:action="@{/view/user/save}" th:object="${newUser}" method="post">
+                <input type="hidden" th:field="*{codeUser}">
+
+                <div class="card form">
+                    <div class="container">
+                        <label class="label">Nombre de Usuario</label>
+                        <input class="textfield" type="text" th:field="*{usernameUser}" placeholder="username123" required>
+                    </div>
+                    <div class="container">
+                        <label class="label">Correo Electrónico</label>
+                        <input class="textfield" type="email" th:field="*{emailUser}" placeholder="correo@kinal.edu.gt" required>
+                    </div>
+                    <div class="container">
+                        <label class="label">Contraseña</label>
+                        <input class="textfield" type="password" th:field="*{passwordUser}" placeholder="********" required>
+                    </div>
+                    <div class="container">
+                        <label class="label">Rol</label>
+                        <input class="textfield" type="text" th:field="*{rolUser}" placeholder="ROLE_USER" required>
+                    </div>
+                    <div class="container">
+                        <label class="label">Estado</label>
+                        <input class="textfield" type="number" th:field="*{stateUser}" placeholder="1" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn" th:text="${newUser.codeUser != null} ? 'Actualizar' : 'Añadir'"></button>
+            </form>
+
+            <form th:action="@{/view/users/search}" method="get" class="card">
+                <input type="number" name="codeSearch" class="textfield" placeholder="Buscar por código de usuario (Ej: 1)" style="flex: 1;">
+                <div class="actions">
+                    <button type="submit" class="btn bg-green2">Buscar</button>
+                    <a th:href="@{/view/users}" class="btn bg-red2" style="text-decoration: none; text-align: center;">Limpiar</a>
+                </div>
+            </form>
+
+            <section class="clients">
+                <article th:each="user : ${users}" class="card client bg-blue">
+                    <h3 class="title" th:text="'Código: ' + ${user.codeUser}"></h3>
+                    <h3 class="title" th:text="'Usuario: ' + ${user.usernameUser}"></h3>
+                    <h3 class="title" th:text="'Email: ' + ${user.emailUser}"></h3>
+                    <h3 class="title" th:text="'Rol: ' + ${user.rolUser}"></h3>
+                    <h3 class="title" th:text="'Estado: ' + ${user.stateUser}"></h3>
+
+                    <div sec:authorize="hasRole('ADMIN')" class="actions">
+                        <a th:href="@{/view/user/edit/{code}(code=${user.codeUser})}" class="btn bg-blue2">Editar</a>
+                        <a th:href="@{/view/user/delete/{code}(code=${user.codeUser})}" class="btn bg-red2">Eliminar</a>
+                    </div>
+                </article>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <h3 class="title">@Copyright Angel Alfaro</h3>
+    </footer>
+</body>
+
+</html>

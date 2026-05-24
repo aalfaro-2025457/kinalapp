@@ -35,5 +35,9 @@ public class HomeWebController {
         return "redirect:/view/detail-sales";
     }
     
+    @GetMapping("/user")
+    public String goUsers() {
+        return "redirect:/view/user";
+    }
 
 }
