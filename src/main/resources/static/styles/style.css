@@ -176,6 +176,20 @@ body {
     background: linear-gradient(#9b500e, #ac6629);
 }
 
+.bg-blue {
+    background: linear-gradient(#1124a3, #3f2ab8);
+}
+
+.bg-blue2 {
+    background: linear-gradient(#180d90, #2c2fb5);
+    box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    transition: ease-in-out .4s;
+}
+
+.bg-blue2:hover {
+    background: linear-gradient(#1e0e9b, #3429ac);
+}
+
 
 .ft-black {
     color: #1e2330;
